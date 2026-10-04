@@ -7,24 +7,24 @@ from app.main import check_password
     "password",
     [
         "Pass@word1",
-        "A1@abcde",           # Exactly 8 characters
-        "A1@" + "a" * 13,     # Exactly 16 characters
-        "ABCDEFG1@",          # Lowercase is not required
-        "A123456@",           # Only one uppercase letter
-        "Abcdefg1$",          # Only one digit and special character
+        "A1@abcde",
+        "A1@" + "a" * 13,
+        "ABCDEFG1@",
+        "A123456@",
+        "Abcdefg1$",
     ],
 )
-def test_valid_password(password):
+def test_valid_password(password: str) -> None:
     assert check_password(password) is True
 
 
 @pytest.mark.parametrize("special", list("$@#&!-_"))
-def test_each_allowed_special_character(special):
+def test_each_allowed_special_character(special: str) -> None:
     assert check_password(f"Abcdef1{special}") is True
 
 
 @pytest.mark.parametrize("digit", "0123456789")
-def test_each_allowed_digit(digit):
+def test_each_allowed_digit(digit: str) -> None:
     assert check_password(f"Abcdef@{digit}") is True
 
 
@@ -34,15 +34,15 @@ def test_each_allowed_digit(digit):
         "",
         "qwerty",
         "Str@ng",
-        "A1@abcd",            # Exactly 7 characters
-        "A1@" + "a" * 14,     # Exactly 17 characters
-        "abcdef1@",           # Missing uppercase letter
-        "Abcdefg@",           # Missing digit
-        "Abcdefg1",           # Missing special character
-        "abcdefgh",           # Missing all three required types
+        "A1@abcd",
+        "A1@" + "a" * 14,
+        "abcdef1@",
+        "Abcdefg@",
+        "Abcdefg1",
+        "abcdefgh",
     ],
 )
-def test_invalid_password(password):
+def test_invalid_password(password: str) -> None:
     assert check_password(password) is False
 
 
@@ -78,11 +78,11 @@ def test_invalid_password(password):
         "É",
         "Ж",
         "中",
-        "١",                 # Non-ASCII digit
-        "１",                 # Fullwidth digit
-        "²",                 # Superscript digit
+        "١",
+        "１",
+        "²",
         "🙂",
     ],
 )
-def test_forbidden_characters(character):
+def test_forbidden_characters(character: str) -> None:
     assert check_password(f"Abcdef1@{character}") is False
