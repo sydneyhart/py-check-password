@@ -1,22 +1,26 @@
-from string import ascii_lowercase
+from string import ascii_letters, ascii_uppercase, digits
 
 
 def check_password(password: str) -> bool:
-    if len(password) not in range(8, 17):
+    if not 8 <= len(password) <= 16:
         return False
+
+    special_characters = "$@#&!-_"
+    allowed_characters = ascii_letters + digits + special_characters
+
     has_upper = False
     has_digit = False
     has_special = False
-    for letter in password:
-        if letter.isalpha():
-            if letter.upper() == letter:
-                has_upper = True
-            if letter.lower() not in ascii_lowercase:
-                return False
-        elif letter.isdigit():
-            has_digit = True
-        elif letter in "$@#&!-_":
-            has_special = True
-        else:
+
+    for character in password:
+        if character not in allowed_characters:
             return False
-    return all([has_upper, has_digit, has_special])
+
+        if character in ascii_uppercase:
+            has_upper = True
+        elif character in digits:
+            has_digit = True
+        elif character in special_characters:
+            has_special = True
+
+    return all((has_upper, has_digit, has_special))
